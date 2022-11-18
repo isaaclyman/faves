@@ -1,9 +1,8 @@
-use std::collections::HashMap;
-
 use serde_json::Value;
 use yew::{html::Scope, prelude::*};
 use yew_router::prelude::*;
 
+mod category;
 mod data;
 
 #[derive(Clone, Routable, PartialEq)]
@@ -17,24 +16,11 @@ enum Route {
     NotFound,
 }
 
-#[function_component(Secure)]
-fn secure() -> Html {
-    let history = use_history().unwrap();
-
-    let onclick = Callback::once(move |_| history.push(Route::Home));
-    html! {
-        <div>
-            <h1>{ "Secure" }</h1>
-            <button {onclick}>{ "Go Home" }</button>
-        </div>
-    }
-}
-
 fn switch(routes: &Route) -> Html {
     match routes {
         Route::Home => html! { <h1>{ "Home" }</h1> },
         Route::Secure => html! {
-            <Secure />
+            <category::Secure />
         },
         Route::NotFound => html! { <h1>{ "404" }</h1> },
     }
@@ -87,26 +73,22 @@ impl Component for HtmlModel {
     fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
             <BrowserRouter>
-                { self.view_nav(ctx.link()) }
-
-                <main>
-                    <Switch<Route> render={Switch::render(switch)} />
-                </main>
+                { self.view_header(ctx.link()) }
+                { self.view_body(||
+                    html! {
+                        <Switch<Route> render={Switch::render(switch)} />
+                    }
+                ) }
             </BrowserRouter>
         }
     }
 }
 
 impl HtmlModel {
-    fn view_nav(&self, link: &Scope<Self>) -> Html {
-        let Self {
-            navbar_active,
-            category_data,
-            ..
-        } = self;
+    fn view_header(&self, link: &Scope<Self>) -> Html {
+        let Self { navbar_active, .. } = self;
 
         html! {
-            <>
             <header
                 class="bg-slate-900 text-slate-400 py-6 px-4 flex flex-row items-baseline border-b-2 border-blue-800"
             >
@@ -126,7 +108,18 @@ impl HtmlModel {
                 </button>
                 <h1 class="text-2xl pl-6 font-light">{ "a few of my favorite things" }</h1>
             </header>
-            <div class="flex-1 relative">
+        }
+    }
+
+    fn view_body(&self, outlet: fn() -> Html) -> Html {
+        let Self {
+            navbar_active,
+            category_data,
+            ..
+        } = self;
+
+        html! {
+            <main class="flex-1 relative flex flex-col">
                 <nav class={classes!(
                     "flex",
                     "flex-col",
@@ -143,6 +136,7 @@ impl HtmlModel {
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
                             { "Home" }
                         </Link<Route>>
+                        <hr class="my-2 border-slate-500" />
                         { category_data.iter().map(|(name, _)|
                             html! {
                                 <Link<Route> classes={classes!("navbar-item")} to={Route::Secure}>
@@ -162,8 +156,8 @@ impl HtmlModel {
                         <a href="https://yew.rs">{ "Yew" }</a>
                     </footer>
                 </nav>
-            </div>
-            </>
+                { outlet() }
+            </main>
         }
     }
 }
