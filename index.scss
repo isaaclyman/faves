@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0;
+  width: 100vw;
+}
+
+$nav-width: 15rem;
+$bumper-width: 2rem;
+$full-width: $nav-width + $bumper-width;
+.nav-menu {
+  bottom: 0;
+  box-shadow: 0 0 #000;
+  left: -$full-width;
+  max-width: $full-width;
+  padding-left: $bumper-width;
+  position: absolute;
+  top: 0;
+  transition: box-shadow 750ms ease, left 150ms cubic-bezier(.17,.67,.47,1.16);
+  width: $full-width;
+
+  &-active {
+    box-shadow: 2px 0px 14px 2px rgba(0,0,0,0.5);
+    left: -$bumper-width;
+  }
+}
+
+.nav-footer {
+  a {
+    text-decoration: underline;
+  }
+}
