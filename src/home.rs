@@ -5,7 +5,7 @@ pub fn home() -> Html {
     html! {
       <div class="p-8 flex-1 bg-rust text-black">
           <h1 class="text-xl font-light pb-4">{ "Welcome." }</h1>
-          <p>{ "You've discovered an archive of all the things I love. Please feel free to browse around." }</p>
+          <p>{ "You've discovered an archive of all the things I love. Feel free to browse around." }</p>
           <hr class="my-4 border-jet" />
           <h1 class="text-xl font-light pb-4">{ "Technical Details" }</h1>
           <p class="mb-2">{ "This site was built with type-safe, memory-safe Rust!" }</p>

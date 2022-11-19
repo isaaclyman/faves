@@ -90,7 +90,7 @@ impl HtmlModel {
 
         html! {
             <header
-                class="bg-blue text-white py-4 px-4 flex flex-row items-baseline border-b-2 border-black z-10"
+                class="bg-blue text-white py-4 px-4 flex flex-row items-baseline border-b-2 border-black z-20"
             >
                 <button class={classes!(
                     "transition-colors",
@@ -119,7 +119,17 @@ impl HtmlModel {
         } = self;
 
         html! {
-            <main class="flex-1 relative flex flex-col">
+            <main class="flex-1 relative flex flex-col z-10">
+                <div class={classes!(
+                    "absolute",
+                    "z-1",
+                    "inset-0",
+                    "bg-white/75",
+                    "transition-opacity",
+                    if *navbar_active {"opacity-100"} else {"opacity-0"},
+                    if *navbar_active {"pointer-events-auto"} else {"pointer-events-none"}
+                )} onclick={link.callback(|_| Msg::CloseNavbar)}>
+                </div>
                 <nav class={classes!(
                     "flex",
                     "flex-col",
@@ -129,6 +139,7 @@ impl HtmlModel {
                     "text-white",
                     "py-4",
                     "nav-menu",
+                    "z-5",
                     if *navbar_active {"nav-menu-active"} else {""}
                 )}
                     role="navigation" aria-label="main navigation">
