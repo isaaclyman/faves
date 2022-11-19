@@ -4,39 +4,34 @@ use yew_router::prelude::*;
 
 mod category;
 mod data;
+mod home;
+mod icons;
+mod not_found;
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
     #[at("/")]
     Home,
-    #[at("/faves/:category")]
-    Secure,
+    #[at("/faves/:name")]
+    Category { name: String },
     #[not_found]
     #[at("/404")]
     NotFound,
 }
 
-fn switch(routes: &Route) -> Html {
-    match routes {
-        Route::Home => html! { <h1>{ "Home" }</h1> },
-        Route::Secure => html! {
-            <category::Secure />
-        },
-        Route::NotFound => html! { <h1>{ "404" }</h1> },
-    }
-}
-
-#[function_component(Main)]
-fn app() -> Html {
-    html! {
-        <BrowserRouter>
-            <Switch<Route> render={Switch::render(switch)} />
-        </BrowserRouter>
-    }
-}
-
 pub enum Msg {
     ToggleNavbar,
+    CloseNavbar,
+}
+
+fn switch(routes: &Route) -> Html {
+    match routes {
+        Route::Home => html! { <home::Home /> },
+        Route::Category { name } => html! {
+            <category::Category name={name.to_owned()}  />
+        },
+        Route::NotFound => html! { <not_found::NotFound /> },
+    }
 }
 
 pub struct HtmlModel {
@@ -48,13 +43,14 @@ impl Component for HtmlModel {
     type Message = Msg;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
         let data_map = data::get_all_data();
         let mut category_data = data_map
             .iter()
             .map(|(key, val)| (key.to_owned(), val.to_owned()))
             .collect::<Vec<(String, Value)>>();
         category_data.sort_by_key(|(key, _)| key.to_owned());
+
         Self {
             navbar_active: false,
             category_data,
@@ -65,6 +61,10 @@ impl Component for HtmlModel {
         match msg {
             Msg::ToggleNavbar => {
                 self.navbar_active = !self.navbar_active;
+                true
+            }
+            Msg::CloseNavbar => {
+                self.navbar_active = false;
                 true
             }
         }
@@ -78,7 +78,7 @@ impl Component for HtmlModel {
                     html! {
                         <Switch<Route> render={Switch::render(switch)} />
                     }
-                ) }
+                , ctx.link()) }
             </BrowserRouter>
         }
     }
@@ -90,12 +90,12 @@ impl HtmlModel {
 
         html! {
             <header
-                class="bg-slate-900 text-slate-400 py-6 px-4 flex flex-row items-baseline border-b-2 border-blue-800"
+                class="bg-blue text-white py-6 px-4 flex flex-row items-baseline border-b-2 border-black z-10"
             >
                 <button class={classes!(
                     "transition-colors",
-                    if *navbar_active {"bg-slate-600"} else {"bg-slate-700"},
-                    if *navbar_active {"text-slate-100"} else {"text-slate-300"},
+                    if *navbar_active {"bg-slate-700"} else {"bg-slate-600"},
+                    if *navbar_active {"text-slate-300"} else {"text-slate-100"},
                     "rounded-full",
                     "py-1",
                     "px-4",
@@ -111,7 +111,7 @@ impl HtmlModel {
         }
     }
 
-    fn view_body(&self, outlet: fn() -> Html) -> Html {
+    fn view_body<F: FnOnce() -> Html>(&self, outlet: F, link: &Scope<Self>) -> Html {
         let Self {
             navbar_active,
             category_data,
@@ -125,35 +125,37 @@ impl HtmlModel {
                     "flex-col",
                     "justify-start",
                     "items-start",
-                    "bg-slate-900",
-                    "text-slate-400",
+                    "bg-blue",
+                    "text-white",
                     "py-4",
                     "nav-menu",
                     if *navbar_active {"nav-menu-active"} else {""}
                 )}
                     role="navigation" aria-label="main navigation">
-                    <div class="flex-1 px-4 flex flex-col">
+                    <div class="flex-1 px-4 flex flex-col" onclick={link.callback(|_| Msg::CloseNavbar)}>
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
                             { "Home" }
                         </Link<Route>>
-                        <hr class="my-2 border-slate-500" />
+                        <hr class="my-2 border-white" />
                         { category_data.iter().map(|(name, _)|
                             html! {
-                                <Link<Route> classes={classes!("navbar-item")} to={Route::Secure}>
+                                <Link<Route>
+                                    classes={classes!("navbar-item")}
+                                    to={Route::Category { name: name.to_owned() }}>
                                     { name }
                                 </Link<Route>>
                             }
                         ).collect::<Html>() }
                     </div>
-                    <footer class="text-xs font-bold mx-2 px-2 border-l-4 border-blue-800 nav-footer">
+                    <footer class="text-xs font-bold mx-2 px-2 border-l-4 border-lightblue nav-footer">
                         { "Built with " }
-                        <a href="https://www.rust-lang.org/">{ "Rust" }</a>
-                        { ", " }
                         <a href="https://webassembly.org/">{ "WebAssembly" }</a>
-                        { ", " }
-                        <a href="https://tailwindcss.com/">{ "Tailwind" }</a>
-                        { " and "}
+                        { " (via " }
+                        <a href="https://www.rust-lang.org/">{ "Rust" }</a>
+                        { " & " }
                         <a href="https://yew.rs">{ "Yew" }</a>
+                        { ") and "}
+                        <a href="https://tailwindcss.com/">{ "Tailwind" }</a>
                     </footer>
                 </nav>
                 { outlet() }

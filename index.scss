@@ -17,11 +17,12 @@ $full-width: $nav-width + $bumper-width;
   padding-left: $bumper-width;
   position: absolute;
   top: 0;
-  transition: box-shadow 750ms ease, left 150ms cubic-bezier(.17,.67,.47,1.16);
+  transition: box-shadow 750ms ease,
+    left 220ms cubic-bezier(.17,.67,.09,1.31);
   width: $full-width;
 
   &-active {
-    box-shadow: 2px 0px 14px 2px rgba(0,0,0,0.5);
+    box-shadow: 2px 0px 14px 2px rgba(0, 0, 0, 0.5);
     left: -$bumper-width;
   }
 }

@@ -14,7 +14,7 @@ body {
   padding-left: 2rem;
   position: absolute;
   top: 0;
-  transition: box-shadow 750ms ease, left 150ms cubic-bezier(0.17, 0.67, 0.47, 1.16);
+  transition: box-shadow 750ms ease, left 220ms cubic-bezier(0.17, 0.67, 0.09, 1.31);
   width: 17rem;
 }
 .nav-menu-active {
