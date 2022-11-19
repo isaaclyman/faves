@@ -18,7 +18,8 @@ module.exports = {
         'lightblue': '#60D9E6',
         'bone': '#DDDBCB',
         'rust': '#CCCACE',
-        'jet': '#292929'
+        'jet': '#292929',
+        'lightgray': '#B8B5BA'
       })
     }
   },

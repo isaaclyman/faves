@@ -70,12 +70,12 @@ impl Category {
                 <p>{ "#ERR" }</p>
             },
             Some(arr) => html! {
-                { for arr.iter().map(|v| self.view_entry(v)) }
+                { for arr.iter().enumerate().map(|(ix, v)| self.view_entry(ix, v)) }
             },
         }
     }
 
-    fn view_entry(&self, item: &Value) -> Html {
+    fn view_entry(&self, ix: usize, item: &Value) -> Html {
         if !item.is_object() {
             panic!("Each entry must be an object.")
         }
@@ -96,14 +96,18 @@ impl Category {
             Some(link) => html! {
                 <>
                     <a class="flex flex-row items-center" href={String::from(link)}>
-                        <h2 class="text-l pr-2">{ title }</h2>
+                        <h2 class="text-l pr-2">{ ix + 1 }{ ". " }{ title }</h2>
                         { icons::link_out() }
                     </a>
                 </>
             },
         };
 
-        let valid_soft_tags: Vec<String> = vec![String::from("author"), String::from("year")];
+        let valid_soft_tags: Vec<String> = vec![
+            String::from("author"),
+            String::from("year"),
+            String::from("network"),
+        ];
         let mut soft_tags: Vec<(&String, String)> = Vec::new();
 
         for key in map.keys() {
@@ -128,11 +132,11 @@ impl Category {
 
         html! {
             <div class="pb-2 flex flex-col items-start">
-                <div class="flex flex-row items-center">
+                <div class="flex flex-row items-center mb-1">
                     { name_element }
                     { for soft_tags.iter().map(|(key, val)|
                         html! {
-                            <div class="text-xs py-0.5 px-1.5 ml-2 bg-jet text-white rounded">
+                            <div class="text-xs py-0.5 px-1.5 ml-2 bg-slate-400 text-white rounded">
                                 <span class="">
                                     {key}{": "}
                                 </span>
@@ -143,20 +147,22 @@ impl Category {
                         }
                     ) }
                 </div>
-                { match hard_tags {
-                    None => html! {},
-                    Some(tags) => html! {
-                        { for tags.enumerate().map(|(ix, tag)|
-                            html! {
-                                <div class="inline-block mb-1 text-xs py-0.5 px-1.5 mr-2 bg-jet text-white rounded">
-                                    <span class="">
-                                        {"#"}{tag}
-                                    </span>
-                                </div>
-                            }
-                        ) }
-                    }
-                } }
+                <div class="flex flex-wrap md:max-w-md max-w-full">
+                    { match hard_tags {
+                        None => html! {},
+                        Some(tags) => html! {
+                            { for tags.enumerate().map(|(ix, tag)|
+                                html! {
+                                    <div class="inline-block mb-2 text-xs py-0.5 px-1.5 mr-2 bg-lightgray text-jet rounded">
+                                        <span class="">
+                                            {"#"}{tag}
+                                        </span>
+                                    </div>
+                                }
+                            ) }
+                        }
+                    } }
+                </div>
             </div>
         }
     }

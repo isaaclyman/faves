@@ -1,16 +1,19 @@
 [{
   "title": "The Myth of Sysiphus",
   "author": "Albert Camus",
-  "link": "https://en.wikipedia.org/wiki/The_Myth_of_Sisyphus",
-  "tags": ["is life worth living", "spoiler: yes"]
+  "year": "1942",
+  "link": "https://bookshop.org/p/books/the-myth-of-sisyphus-albert-camus/12090211?ean=9780525564454",
+  "tags": ["philosophy", "absurdism", "is life worth living", "spoiler: yes"]
 },{
   "title": "Children of Time",
   "author": "Adrian Tchaikovsky",
-  "link": "https://en.wikipedia.org/wiki/Children_of_Time_(novel)",
-  "tags": ["the bugs. they are my children"]
+  "year": "2015",
+  "link": "https://bookshop.org/p/books/children-of-time-adrian-tchaikovsky/113411?ean=9780316452502",
+  "tags": ["science fiction", "the bugs. they are my children"]
 },{
   "title": "The Three-Body Trilogy",
   "author": "Cixin Liu",
-  "link": "https://en.wikipedia.org/wiki/Remembrance_of_Earth%27s_Past",
-  "tags": ["oh no the aliens are coming", "when will they get here", "oh two or three centuries"]
+  "year": "2006",
+  "link": "https://bookshop.org/p/books/three-body-problem-boxed-set-the-three-body-problem-the-dark-forest-death-s-end-cixin-liu/6985765?ean=9781250254498",
+  "tags": ["science fiction", "oh no the aliens are coming", "when will they get here", "oh two or three centuries"]
 }]

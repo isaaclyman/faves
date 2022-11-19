@@ -90,7 +90,7 @@ impl HtmlModel {
 
         html! {
             <header
-                class="bg-blue text-white py-6 px-4 flex flex-row items-baseline border-b-2 border-black z-10"
+                class="bg-blue text-white py-4 px-4 flex flex-row items-baseline border-b-2 border-black z-10"
             >
                 <button class={classes!(
                     "transition-colors",
@@ -106,7 +106,7 @@ impl HtmlModel {
                 >
                     { "menu" }
                 </button>
-                <h1 class="text-2xl pl-6 font-light">{ "a few of my favorite things" }</h1>
+                <h1 class="text-xl pl-6 font-light">{ "a few of my favorite things" }</h1>
             </header>
         }
     }
