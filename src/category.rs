@@ -94,12 +94,10 @@ impl Category {
                 <h2 class="text-l pr-2">{ title }</h2>
             },
             Some(link) => html! {
-                <>
-                    <a class="flex flex-row items-center" href={String::from(link)}>
-                        <h2 class="text-l pr-2">{ ix + 1 }{ ". " }{ title }</h2>
-                        { icons::link_out() }
-                    </a>
-                </>
+                <a class="flex flex-row items-center mr-2" href={String::from(link)}>
+                    <h2 class="text-l pr-2">{ ix + 1 }{ ". " }{ title }</h2>
+                    { icons::link_out() }
+                </a>
             },
         };
 
@@ -132,11 +130,11 @@ impl Category {
 
         html! {
             <div class="pb-2 flex flex-col items-start">
-                <div class="flex flex-row items-center mb-1">
+                <div class="flex flex-row flex-wrap items-center mb-2">
                     { name_element }
                     { for soft_tags.iter().map(|(key, val)|
                         html! {
-                            <div class="text-xs py-0.5 px-1.5 ml-2 bg-slate-400 text-white rounded">
+                            <div class="text-xs py-0.5 px-1.5 mr-2 bg-slate-400 text-white rounded">
                                 <span class="">
                                     {key}{": "}
                                 </span>

@@ -144,14 +144,14 @@ impl HtmlModel {
                 )}
                     role="navigation" aria-label="main navigation">
                     <div class="flex-1 px-4 flex flex-col" onclick={link.callback(|_| Msg::CloseNavbar)}>
-                        <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
+                        <Link<Route> classes={classes!("navbar-item", "text-lg")} to={Route::Home}>
                             { "Home" }
                         </Link<Route>>
                         <hr class="my-2 border-white" />
                         { category_data.iter().map(|(name, _)|
                             html! {
                                 <Link<Route>
-                                    classes={classes!("navbar-item")}
+                                    classes={classes!("navbar-item", "text-lg")}
                                     to={Route::Category { name: name.to_owned() }}>
                                     { name }
                                 </Link<Route>>
