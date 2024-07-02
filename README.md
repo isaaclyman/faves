@@ -8,6 +8,10 @@ Tailwind for production: `NODE_ENV=production tailwindcss -c ./tailwind.config.j
 
 Can add `--watch`.
 
+# Build
+
+`trunk build`
+
 # Run
 
 `trunk serve`
