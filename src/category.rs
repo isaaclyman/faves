@@ -34,7 +34,7 @@ impl Component for Category {
         }
     }
 
-    fn changed(&mut self, ctx: &Context<Self>) -> bool {
+    fn changed(&mut self, ctx: &Context<Self>, _old_props: &Self::Properties) -> bool {
         self.name = decode_name(&ctx.props().name);
         self.content = self.data.get(&self.name).cloned();
         true
@@ -149,7 +149,7 @@ impl Category {
                     { match hard_tags {
                         None => html! {},
                         Some(tags) => html! {
-                            { for tags.enumerate().map(|(ix, tag)|
+                            { for tags.map(|tag|
                                 html! {
                                     <div class="inline-block mb-2 text-xs py-0.5 px-1.5 mr-2 bg-lightgray text-jet rounded">
                                         <span class="">

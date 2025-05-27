@@ -12,7 +12,7 @@ mod not_found;
 enum Route {
     #[at("/")]
     Home,
-    #[at("/faves/:name")]
+    #[at("/:name")]
     Category { name: String },
     #[not_found]
     #[at("/404")]
@@ -24,7 +24,7 @@ pub enum Msg {
     CloseNavbar,
 }
 
-fn switch(routes: &Route) -> Html {
+fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! { <home::Home /> },
         Route::Category { name } => html! {
@@ -43,7 +43,7 @@ impl Component for HtmlModel {
     type Message = Msg;
     type Properties = ();
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         let data_map = data::get_all_data();
         let mut category_data = data_map
             .iter()
@@ -72,14 +72,14 @@ impl Component for HtmlModel {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
-            <BrowserRouter>
+            <HashRouter>
                 { self.view_header(ctx.link()) }
                 { self.view_body(||
                     html! {
-                        <Switch<Route> render={Switch::render(switch)} />
+                        <Switch<Route> render={switch} />
                     }
                 , ctx.link()) }
-            </BrowserRouter>
+            </HashRouter>
         }
     }
 }
@@ -177,5 +177,5 @@ impl HtmlModel {
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::new(log::Level::Trace));
-    yew::start_app::<HtmlModel>();
+    yew::Renderer::<HtmlModel>::new().render();
 }
